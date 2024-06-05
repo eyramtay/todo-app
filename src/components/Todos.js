@@ -1,13 +1,28 @@
+import { connect } from "react-redux";
 import React, { useState } from "react";
+import { addTodos, removeTodos } from "../redux/reducer";
 
-const Todos = () => {
+const mapStateToProps = (state) => {
+  return {
+    todos: state,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addTodo: (obj) => dispatch(addTodos(obj)),
+    removeTodo: (id) => dispatch(removeTodos(id)),
+  };
+};
+
+const Todos = (props) => {
   const [todo, setTodo] = useState("");
 
   const handleChange = (e) => {
     setTodo(e.target.value);
   };
 
-  //console.log("todo text", todo);
+  console.log("props from store", props);
 
   return (
     <div className="addTodos">
@@ -17,9 +32,32 @@ const Todos = () => {
         className="todo-input"
       />
 
-      <button className="add-btn">Add</button>
+      <button
+        className="add-btn"
+        onClick={() =>
+          props.addTodo({
+            id: Math.floor(Math.random() * 1000),
+            item: todo,
+            completed: false,
+          })
+        }
+      >
+        Add
+      </button>
+      <br />
+      <ul>
+        {props.todos.map((item) => {
+          return (
+            <li key={item.id}>
+              {item.item}{" "}
+              <button onClick={() => props.removeTodo(item.id)}>Delete</button>{" "}
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 };
 
-export default Todos;
+// This is the connect method to connect this component with redux store
+export default connect(mapStateToProps, mapDispatchToProps)(Todos);
