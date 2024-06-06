@@ -1,6 +1,11 @@
 import { connect } from "react-redux";
-import React, { useState } from "react";
-import { addTodos, removeTodos } from "../redux/reducer";
+import React, { useRef, useState } from "react";
+import {
+  addTodos,
+  completeTodos,
+  removeTodos,
+  updateTodos,
+} from "../redux/reducer";
 
 const mapStateToProps = (state) => {
   return {
@@ -12,6 +17,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addTodo: (obj) => dispatch(addTodos(obj)),
     removeTodo: (id) => dispatch(removeTodos(id)),
+    updateTodo: (obj) => dispatch(updateTodos(obj)),
+    completeTodo: (id) => dispatch(completeTodos(id)),
   };
 };
 
@@ -22,7 +29,7 @@ const Todos = (props) => {
     setTodo(e.target.value);
   };
 
-  console.log("props from store", props);
+  //console.log("props from store", props);
 
   return (
     <div className="addTodos">
@@ -45,16 +52,6 @@ const Todos = (props) => {
         Add
       </button>
       <br />
-      <ul>
-        {props.todos.map((item) => {
-          return (
-            <li key={item.id}>
-              {item.item}{" "}
-              <button onClick={() => props.removeTodo(item.id)}>Delete</button>{" "}
-            </li>
-          );
-        })}
-      </ul>
     </div>
   );
 };
