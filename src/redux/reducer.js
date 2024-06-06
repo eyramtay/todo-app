@@ -37,6 +37,7 @@ const addToDoReducer = createSlice({
             completed: true,
           };
         }
+        return todo;
       });
     },
   },

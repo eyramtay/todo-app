@@ -1,4 +1,8 @@
 import React, { useRef } from "react";
+import { FaEdit } from "react-icons/fa";
+
+import { IoCheckmarkCircleSharp } from "react-icons/io5";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 const TodoItem = (props) => {
   const { item, updateTodo, removeTodo, completeTodo } = props;
@@ -19,7 +23,7 @@ const TodoItem = (props) => {
   };
 
   return (
-    <li key={item.id}>
+    <li key={item.id} className="card">
       <textarea
         name=""
         id=""
@@ -28,9 +32,25 @@ const TodoItem = (props) => {
         defaultValue={item.item}
         onKeyDown={(e) => update(item.id, inputRef.current.value, e)}
       />
-      <button onClick={() => changeFocus()}>Edit</button>
-      <button onClick={() => completeTodo(item.id)}>Complete</button>
-      <button onClick={() => removeTodo(item.id)}>Delete</button>{" "}
+      <div className="btns">
+        <button onClick={() => changeFocus()}>
+          {" "}
+          <FaEdit />{" "}
+        </button>
+        {item.completed === false && (
+          <button
+            style={{ color: "green" }}
+            onClick={() => completeTodo(item.id)}
+          >
+            <IoCheckmarkCircleSharp />
+          </button>
+        )}
+        <button style={{ color: "red" }} onClick={() => removeTodo(item.id)}>
+          {" "}
+          <FaRegTrashAlt />
+        </button>{" "}
+      </div>
+      {item.completed && <span className="completed">done</span>}
     </li>
   );
 };
